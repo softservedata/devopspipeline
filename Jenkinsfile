@@ -26,5 +26,21 @@ pipeline {
             }
         }
 
+        stage('Integration Test') {
+            parallel {
+                stage('Running') {
+                    agent any
+                    steps {
+                        bat 'java -jar ./target/lv722contact.war'
+                    }
+                }
+                stage('Integration Test') {
+                    steps {
+                        sleep 20 // seconds
+                       bat 'mvn verify -DskipUnitTests'
+                    }
+                }
+            }
+        }
     }
 }
